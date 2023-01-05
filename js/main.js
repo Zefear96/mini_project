@@ -369,21 +369,19 @@ function addLike() {
     };
     let likeId = +prompt('Enter post ID to like');
     let postLike = posts.find(item => item.id === likeId);
-    // let postObj = getLikesObj(likeId)
-    // if(!checkOwnerLikes(likeId)) {
-    //     alert ('There is no this post or you are not the author of this comment!');
-    //     return;
-    // }
-    if (postLike && flagLike === false && posts.nameLikes !== inSystem) {
-        postLike.likes += 1;
-        postLike.nameLikes = [inSystem];
-        flagLike = true;
-    } else if (postLike && flagLike === true && posts.nameLikes !== inSystem) {
+    //dislike
+    if(postLike.nameLikes?.includes(inSystem)){
+        postLike.nameLikes.splice(postLike.nameLikes.indexOf(inSystem), 1);
         postLike.likes -= 1;
-        postLike.nameLikes = [inSystem];
-        flagDisl = true;
-        flagLike = false;
-    };
+        readPost();
+        return;
+    }
+
+    if(postLike){
+        postLike.likes += 1;
+        postLike.nameLikes ? postLike.nameLikes.push(inSystem) : postLike.nameLikes = [inSystem];
+    }
+
     console.log(posts);
     readPost();
     return;
